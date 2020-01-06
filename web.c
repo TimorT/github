@@ -79,7 +79,7 @@ void doit(int fd)
 	}
 }
 /*HTTP额头请求报文的读取*/
-void read_requersthdrs(rio_t *rp)
+void read_requesthdrs(rio_t *rp)
 {
 	char buf[MAXLINE];
 

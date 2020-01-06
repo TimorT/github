@@ -56,6 +56,7 @@ extern char **environ;
 
 void unix_error(char *msg);
 void posix_error(int code, char *msg);
+void gai_error(int code, char *msg);
 void dns_error(char *msg);
 void app_error(char *msg);
 
@@ -79,9 +80,17 @@ void Sigfillset(sigset_t *set);
 void Sigaddset(sigset_t *set, int signum);
 void Sigdelset(sigset_t *set, int signum);
 int Sigismember(const sigset_t *set, int signum);
+int Sigsuspend(const sigset_t *set);
+
+ssize_t sio_puts(char s[]);
+ssize_t sio_putl(long v);
+void sio_error(char s[]);
+
+ssize_t Sio_puts(char s[]);
+ssize_t Sio_putl(long v);
+void Sio_error(char s[]);
 
 int Open(const char *pathname, int flags, mode_t mode);
-
 ssize_t Read(int fd, void *buf, size_t count);
 ssize_t Write(int fd, const void *buf, size_t count);
 off_t Lseek(int fildes, off_t offset, int whence);
@@ -92,8 +101,13 @@ int Dup2(int fd1, int fd2);
 void Stat(const char *filename, struct stat *buf);
 void Fstat(int fd, struct stat *buf) ;
 
+DIR *Opendir(const char *name);
+struct dirent *Readdir(DIR *dirp);
+int Closedir(DIR *dirp);
+
 void *Mmap(void *addr, size_t len, int prot, int flags, int fd, off_t offset);
 void Munmap(void *start, size_t length);
+
 
 void Fclose(FILE *fp);
 FILE *Fdopen(int fd, const char *type);
@@ -117,6 +131,14 @@ void Connect(int sockfd, struct sockaddr *serv_addr, int addrlen);
 
 struct hostent *Gethostbyname(const char *name);
 struct hostent *Gethostbyaddr(const char *addr, int len, int type);
+
+void Getaddrinfo(const char *node, const char *service,
+                 const struct addrinfo *hints, struct addrinfo **res);
+void Getnameinfo(const struct sockaddr *sa, socklen_t salen, char *host,
+                 size_t hostlen, char *serv, size_t servlen, int flags);
+void Freeaddrinfo(struct addrinfo *res);
+void Inet_ntop(int af, const void *src, char *dst, socklen_t size);
+void Inet_pton(int af, const char *src, void *dst);
 
 void Pthread_create(pthread_t *tidp, pthread_attr_t *attrp,
 		    void * (*routine)(void *), void *argp);
@@ -143,24 +165,11 @@ void Rio_readinitb(rio_t *rp, int fd);
 ssize_t Rio_readnb(rio_t *rp, void *usrbuf, size_t n);
 ssize_t Rio_readlineb(rio_t *rp, void *usrbuf, size_t maxlen);
 
-int open_client_sock(char *hostname, int portno);
-int open_listen_sock(int portno);
+int open_clientfd(char *hostname, int portno);
+int open_listenfd(int portno);
 
-int Open_client_sock(char *hostname, int port);
-int Open_listen_sock(int port);
-
-int Msgctl(int msqid, int cmd, struct msqid_ds *buf);
-int Msgget(key_t key, int msgflg);
-int Msgrcv(int maqid, void *msg_ptr, size_t msg_sz, long int msgtype, int msgflg);
-int Msgsnd(int msqid, const void *msg_ptr, size_t msg_sz, int msgflg);
-int Shmget(key_t key, size_t size, int shmflg);
-char *Shmat(int shmid, const void *shmaddr, int shmflg);
-int Shmctl(int shm_id, int cmd, struct shmid_ds *buf );
-int Shmdt(const void *shmaddr);
-int Semget(key_t key, int nsems, int semflg);
-int Semctl(int semid, int semnum, int cmd, union semun arg);
-int Semop(int semid, struct sembuf *sem, int sops);
-int Mkfifo(const char *pathname, mode_t mode);
+int Open_clientfd(char *hostname, int port);
+int Open_listenfd(int port);
 
 #endif /* __WRAPPER_H__ */
 
