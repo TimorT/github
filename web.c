@@ -72,7 +72,7 @@ void doit(int fd)
 	{
 		if(!(S_ISREG(sbuf.st_mode)) || !(S_IXUSR & sbuf.st_mode))
 		{
-			clienterror(fd,fliename,"403","FORBIDDEN","WEB CLOUND NOT RUN CGI PROGRAM");
+			clienterror(fd,filename,"403","FORBIDDEN","WEB CLOUND NOT RUN CGI PROGRAM");
 		return;
 		}
 	serve_dynamic(fd,filename,cgiargs);
