@@ -18,7 +18,7 @@ int main(int argc,char **argv)
 	/*check command line args*/
 	if(argc!=2)
 	{
-		fprintf(stderr,"usage:%s <port> \n",argv[0];
+		fprintf(stderr,"usage:%s <port> \n",argv[0]);
 		exit(1);
 	}
 	/*调用open_listen_sock函数打开监听套接字*/
@@ -63,7 +63,7 @@ void doit(int fd)
 	{
 		if(!(S_ISREG(sbuf.st_mode)) || !(S_IRUSR & sbuf.st_mode))
 		{
-			clienterror(fd,fliename,"403","FORBIDDEN","WEB CLOUND NOT READ THE FILE");
+			clienterror(fd,filename,"403","FORBIDDEN","WEB CLOUND NOT READ THE FILE");
 		return;
 		}
 	serve_static(fd,filename,sbuf.st_size);
@@ -144,7 +144,7 @@ void get_filetype(char *filename,char *filetype)
 {
 	if(strstr(filename,".html"))
 		strcpy(filetype,"text/html");
-	else if(strstr(filename.".gif"))
+	else if(strstr(filename,".gif"))
 		strcpy(filetype,"image/gif");
 	else if(strstr(filetype,".png"))
 		strcpy(filetype,"image/png");
@@ -153,7 +153,7 @@ void get_filetype(char *filename,char *filetype)
 	else if(strstr(filetype,".mpeg"))
 		strcpy(filetype,"video/mpeg");
 	else
-		strcpy(filetype "text/html");
+		strcpy(filetype,"text/html");
 }
 void serve_dynamic(int fd, char *filename, char *cgiargs) 
 {
@@ -166,7 +166,7 @@ void serve_dynamic(int fd, char *filename, char *cgiargs)
 	{
 		setenv("QUERY_STRING",cgiargs,1);
 		Dup2(fd,STDOUT_FILENO);
-		Execve(filename,emptylist,envion);
+		Execve(filename,emptylist,environ);
 	}
 	wait(NULL);
 }
