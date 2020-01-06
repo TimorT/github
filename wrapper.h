@@ -28,4 +28,5 @@
 #include <sys/shm.h>
 #include <sys/sem.h>
 
-
+#define DEF_MODE   S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP|S_IROTH|S_IWOTH
+#define DEF_UMASK  S_IWGRP|S_IWOTH
