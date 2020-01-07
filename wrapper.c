@@ -1,5 +1,7 @@
 #include "wrapper.h"
 
+
+/* begin error*/
 void unix_error(char *msg) 
 {
     fprintf(stderr, "%s: %s\n", msg, strerror(errno));
@@ -26,7 +28,9 @@ void app_error(char *msg)
     fprintf(stderr, "%s\n", msg);
     exit(0);
 }
+/* end error*/
 
+/* begin forkwrapper*/
 pid_t Fork(void)
 {
     pid_t pid;
@@ -35,13 +39,14 @@ pid_t Fork(void)
 	unix_error("Fork error");
     return pid;
 }
-
+/* end */
 void Execve(const char *filename, char *const argv[], char *const envp[])
 {
     if (execve(filename, argv, envp) < 0)
 	unix_error("Execve error");
 }
 
+/* begin wait*/
 pid_t Wait(int *status)
 {
     pid_t pid;
@@ -59,7 +64,9 @@ pid_t Waitpid(pid_t pid, int *iptr, int options)
 	unix_error("Waitpid error");
     return(retpid);
 }
+/* end */
 
+/*begin kill*/
 void Kill(pid_t pid, int signum)
 {
     int rc;
@@ -67,6 +74,7 @@ void Kill(pid_t pid, int signum)
     if ((rc = kill(pid, signum)) < 0)
 	unix_error("Kill error");
 }
+/* end */
 void Pause()
 {
     (void)pause();
@@ -331,39 +339,6 @@ void Fstat(int fd, struct stat *buf)
 {
     if (fstat(fd, buf) < 0)
 	unix_error("Fstat error");
-}
-
-/*********************************
- * Wrappers for directory function
- *********************************/
-
-DIR *Opendir(const char *name)
-{
-    DIR *dirp = opendir(name);
-
-    if (!dirp)
-        unix_error("opendir error");
-    return dirp;
-}
-
-struct dirent *Readdir(DIR *dirp)
-{
-    struct dirent *dep;
-
-    errno = 0;
-    dep = readdir(dirp);
-    if ((dep == NULL) && (errno != 0))
-        unix_error("readdir error");
-    return dep;
-}
-
-int Closedir(DIR *dirp)
-{
-    int rc;
-
-    if ((rc = closedir(dirp)) < 0)
-        unix_error("closedir error");
-    return rc;
 }
 
 /***************************************
