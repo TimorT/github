@@ -19,7 +19,8 @@ int main(void)
 	n2 = atoi(arg2);
     }
     product=multiply(n1,n2);
-    sprintf(content,"%sThe product is %d\r\n<p>", content,product);
+    sprintf(content,"%sThis is the result of multiplication\r\n<p>",content);
+    sprintf(content,"%sThe result is %d\r\n<p>", content,product);
 
 
     printf("Connection: close\r\n");
